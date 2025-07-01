@@ -1,0 +1,39 @@
+@Library("Shared") _
+pipeline{
+    agent{
+        label "vinod"
+    }
+    
+    stages{
+        
+        stage("Cloning the Code"){
+            steps{
+                script{
+                    Git_Code_Clone("https://github.com/ritwik-satpati/django-notes-app", "main")
+                }
+            }
+        }
+        stage("Build Docker Image") {
+            steps {
+                script{
+                    Docker_Image_Build("ritwiksatpati", "notes-app", "latest")
+                }
+            }
+        }
+        stage("Push to DockerHub") {
+            steps {
+               script{
+                   DockerHub_Image_Push("dockerHubCred", "notes-app", "latest")
+                }
+            }
+        }
+        stage("Deploy the Code") {
+            steps {
+                script{
+                   Docker_Compose_Image_Deploy()    // docker-compose.yml
+                }
+            }
+        }
+        
+    }
+}
