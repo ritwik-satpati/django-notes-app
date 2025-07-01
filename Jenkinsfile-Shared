@@ -3,6 +3,7 @@ pipeline{
     agent{
         label "vinod"
     }
+
     stages{
         stage("Cloning the Code"){
             steps{
